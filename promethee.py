@@ -27,7 +27,7 @@ def get_input(n):
 def calcHowGood(var1, var2, q, p, gain_or_cost):
     diff = var1 - var2
     diff = diff*gain_or_cost
-    if diff < 0:
+    if diff <= 0:
         return 0
     else:
         if diff >= p:
