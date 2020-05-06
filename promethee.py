@@ -1,4 +1,5 @@
 import numpy as np
+
 devInput = """ 
 ITA BEL GER SWE AUT FRA
 3
@@ -24,9 +25,10 @@ def get_input(n):
     else:
         return input(n)
 
+
 def calcHowGood(var1, var2, q, p, gain_or_cost):
     diff = var1 - var2
-    diff = diff*gain_or_cost
+    diff = diff * gain_or_cost
     if diff <= 0:
         return 0
     else:
@@ -38,14 +40,13 @@ def calcHowGood(var1, var2, q, p, gain_or_cost):
             return 0
 
 
-
 if __name__ == '__main__':
     names = [x.strip() for x in get_input("podaj nazw rzeczów po spacji\n").strip().split(' ')]
     attr_count = int(get_input("ile atrybutów?\n"))
-    attr_names=[]
-    values=[]
-    attr_params=[]
-    gain_costs=[]
+    attr_names = []
+    values = []
+    attr_params = []
+    gain_costs = []
     for _ in range(len(names)):
         values.append([])
     for _ in range(attr_count):
@@ -53,19 +54,36 @@ if __name__ == '__main__':
         attr_names.append(a[0])
         gain_costs.append(int(a[1]))
         for i in range(len(a[2:])):
-            values[i].append(float(a[i+2]))
+            values[i].append(float(a[i + 2]))
     for i in range(attr_count):
-        attr_params.append([float(x.strip()) for x in get_input("k q p atrybutu {} po spacji\n".format(attr_names[i])).strip().split(' ')])
+        attr_params.append([float(x.strip()) for x in
+                            get_input("k q p atrybutu {} po spacji\n".format(attr_names[i])).strip().split(' ')])
 
-    sum_of_weights=0.
+    sum_of_weights = 0.
     for p in attr_params:
-        sum_of_weights+=p[0]
+        sum_of_weights += p[0]
 
+    matrix = []
+    print()
     for i in range(len(names)):
+        matrix.append([])
         for j in range(len(names)):
-            v=0.
+            print('{} vs {}'.format(names[i], names[j]))
+            print('nazwa - v1 v2 k q p wyliczone')
+            v = 0.
             for k in range(attr_count):
-                v += calcHowGood(values[i][k],values[j][k],attr_params[k][1],attr_params[k][2],gain_costs[k])*attr_params[k][0]
-            v/=sum_of_weights
-            print("%.2f" % v,end=" ")
+                v1 = calcHowGood(values[i][k], values[j][k], attr_params[k][1], attr_params[k][2], gain_costs[k]) * \
+                     attr_params[k][0]
+                v += v1
+                print('{} - {} {} {} {} {} {}'.format(attr_names[k][:3], values[i][k], values[j][k], attr_params[k][0],
+                                                      attr_params[k][1], attr_params[k][2], v1 / sum_of_weights))
+            v /= sum_of_weights
+            matrix[i].append(v)
+            print(v)
+            print()
+    print("    ", '  '.join(names))
+    for i in range(len(matrix)):
+        print(names[i], end=" ")
+        for j in matrix[i]:
+            print("%.2f" % j, end=" ")
         print()
