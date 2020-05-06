@@ -48,4 +48,18 @@ def calcAll(var1, var2, q, p, v, gain_or_cost):
     print('v= ', calcV(var1, var2, p, v, gain_or_cost))
 
 
-calcAll(90, 98, 4, 12, 28, 1)
+def calcHowGood(var1, var2, q, p, gain_or_cost):
+    diff = var1 - var2
+    diff = diff*gain_or_cost
+    if diff < 0:
+        return 0
+    else:
+        if diff >= p:
+            return 1
+        if q <= diff <= p:
+            return np.interp([diff], [q, p], [0, 1])[0]
+        else:
+            return 0
+
+
+print(calcHowGood(7,8,0,2,1))
