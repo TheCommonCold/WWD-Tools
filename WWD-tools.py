@@ -8,7 +8,7 @@ def calcC(var1, var2, q, p, gain_or_cost):
         if var1 + q * gain_or_cost <= var2 <= var1:
             return 1
         if var1 + q * gain_or_cost <= var2 <= var1 + p * gain_or_cost:
-            return np.interp([var2], [var1 + q * gain_or_cost, var1 + p * gain_or_cost], [1,0])
+            return np.interp([var2], [var1 + q * gain_or_cost, var1 + p * gain_or_cost], [1,0])[0]
         else:
             return 0
 
@@ -22,5 +22,10 @@ def calcV(var1, var2, p,v, gain_or_cost):
         if var2 >= var1 + v * gain_or_cost:
             return 1
         if var1 + p * gain_or_cost <= var2 <= var1 + v * gain_or_cost:
-            return np.interp([var2], [var1 + p * gain_or_cost, var1 + v * gain_or_cost], [0,1])
+            return np.interp([var2], [var1 + p * gain_or_cost, var1 + v * gain_or_cost], [0,1])[0]
 
+def calcAll(var1, var2, q, p, v, gain_or_cost):
+    print('c= ', calcC(var1,var2,q,p,gain_or_cost))
+    print('v= ', calcV(var1, var2, p, v, gain_or_cost))
+
+calcAll(90,98,4,12,28,1)
